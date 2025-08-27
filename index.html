@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="assets/icons/icon-red.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CS Webring</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <canvas id="bg" aria-hidden="true"></canvas>
+    <script type="module" src="js/animation.js"></script>
+
+    <a href="#main" class="skip-link sr-only">Skip to content</a>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="title" aria-label="CS Webring">
+                <pre class="title-ascii" aria-hidden="true">
+
+                                                                                           ,,                 ,,                       
+`7MMM.     ,MMF'                       .g8"""bgd  .M"""bgd     `7MMF'     A     `7MF'     *MM                 db                       
+  MMMb    dPMM                       .dP'     `M ,MI    "Y       `MA     ,MA     ,V        MM                                          
+  M YM   ,M MM   ,6"Yb.  ,p6"bo      dM'       ` `MMb.            VM:   ,VVM:   ,V .gP"Ya  MM,dMMb.`7Mb,od8 `7MM  `7MMpMMMb.  .P"Ybmmm 
+  M  Mb  M' MM  8)   MM 6M'  OO      MM            `YMMNq.         MM.  M' MM.  M',M'   Yb MM    `Mb MM' "'   MM    MM    MM :MI  I8   
+  M  YM.P'  MM   ,pm9MM 8M           MM.         .     `MM         `MM A'  `MM A' 8M"""""" MM     M8 MM       MM    MM    MM  WmmmP"   
+  M  `YM'   MM  8M   MM YM.    ,     `Mb.     ,' Mb     dM          :MM;    :MM;  YM.    , MM.   ,M9 MM       MM    MM    MM 8M        
+.JML. `'  .JMML.`Moo9^Yo.YMbmd'        `"bmmmd'  P"Ybmmd"            VF      VF    `Mbmmd' P^YbmdP'.JMML.   .JMML..JMML  JMML.YMMMMMb  
+                                                                                                                             6'     dP 
+                                                                                                                             Ybmmmd' 
+          </pre>
+                <span class="title-compact">Mac CS Webring</span>
+            </h1>
+
+            <p class="subtitle">
+                Welcome to the <a href="https://www.mcmaster.ca" target="_blank" rel="noopener">McMaster University</a>
+                CS Webring.<br>
+                A directory of student websites on the World Wide Web.<br><br>
+                If you're a McMaster CS student or alumni, you're already in the club.<br>
+                To join, <a href="https://github.com/antjng/mac-webring" target="_blank" rel="noopener">open a pull
+                    request</a>.
+            </p>
+        </header>
+
+        <main id="main" class="main">
+            <!-- left column -->
+            <section class="catalog">
+                <div class="search-section" role="search">
+                    <label class="sr-only" for="searchInput">Search sites</label>
+                    <div class="search-container">
+                        <span class="search-icon" aria-hidden="true">🔍</span>
+                        <input type="search" id="searchInput" class="search-input"
+                            placeholder="search by name, year, or website..." maxlength="100" spellcheck="false"
+                            autocomplete="off" inputmode="search" />
+                        <button class="search-clear" type="button" aria-label="Clear search">×</button>
+                    </div>
+                    <div class="stats">
+                        <span class="count">0</span> sites in the webring
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <section aria-labelledby="dir-heading" class="sites-table-container">
+                    <h2 id="dir-heading" class="sr-only">Directory</h2>
+                    <div class="table-header">
+                        <div>Name</div>
+                        <div>Year</div>
+                        <div>Website</div>
+                    </div>
+                    <div id="sitesTable" class="sites-table"><!-- rows injected by JS --></div>
+                </section>
+            </section>
+
+            <!-- right column -->
+            <aside class="margin-notes">
+                <section class="chart-section" aria-labelledby="chart-heading">
+                    <h2 id="chart-heading" class="sr-only">Network Chart</h2>
+                    <div id="chartContainer" class="chart-container"></div>
+                </section>
+
+                <!-- <nav class="webring-nav" aria-label="webring navigation">
+            <a href="#" aria-label="previous site">←</a>
+            <a href="$" target="_blank" rel="noopener" aria-label="webring home">
+              <img src="assets/icons/icon-red.svg" alt="" width="22" height="22"/>
+            </a>
+            <a href="#" aria-label="next site">→</a>
+          </nav> -->
+            </aside>
+        </main>
+    </div>
+
+    <a href="https://github.com/antjng/mac-webring" target="_blank" rel="noopener" class="join-button-fixed">
+        Join the ring
+    </a>
+
+    <noscript>
+        <div class="noscript-message">
+            This webring requires JavaScript. Please enable it in your browser.
+        </div>
+    </noscript>
+
+    <script src="js/data.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/webring.js"></script>
+</body>
+
+</html>
