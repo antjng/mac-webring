@@ -1,12 +1,11 @@
 // network web chart using D3.js
 function createChart() {
     const css = getComputedStyle(document.documentElement);
-    const INK = (css.getPropertyValue('--ink') || '#000').trim();
-    const INK_2 = (css.getPropertyValue('--ink-2') || '#1a1a1a').trim();
-    const PAPER = (css.getPropertyValue('--paper') || '#fff').trim();
-    const RULE_MID = (css.getPropertyValue('--rule-mid') || 'rgba(0,0,0,.55)').trim();
-    const RULE_WEAK = (css.getPropertyValue('--rule-weak') || 'rgba(0,0,0,.35)').trim();
-    const ACCENT = (css.getPropertyValue('--accent') || '#7a003c').trim();
+    const INK = (css.getPropertyValue('--ink') || css.getPropertyValue('--fg') || '#111').trim();
+    const PAPER = (css.getPropertyValue('--paper') || css.getPropertyValue('--bg') || '#fff').trim();
+    const ACCENT = (css.getPropertyValue('--accent') || css.getPropertyValue('--primary') || '#db0000').trim();
+    const RULE_MID = (css.getPropertyValue('--rule-mid') || 'rgba(219,0,0,.85)').trim();
+    const RULE_WEAK = (css.getPropertyValue('--rule-weak') || 'rgba(219,0,0,.40)').trim();
 
     const container = d3.select("#chartContainer");
     const containerRect = container.node().getBoundingClientRect();
@@ -14,33 +13,51 @@ function createChart() {
     const height = containerRect.height || 300;
 
     const nodeRadius = 6;
-    const defaultNodeStroke = INK;         // ink outline
-    const defaultNodeFill = PAPER;       // paper fill (hollow dot look)
-    const matchNodeFill = ACCENT;      // when search matches
-    const hoverNodeFill = ACCENT;      // on hover
+    const defaultNodeStroke = ACCENT; // red outline
+    const defaultNodeFill = PAPER; // hollow dot
+    const matchNodeFill = ACCENT; // match = red fill
+    const hoverNodeFill = ACCENT; // hover = red fill
 
-    const defaultEdgeColor = RULE_WEAK;   // hairline rules
-    const hoverEdgeColor = ACCENT;      // accent for connected edges
-    const edgeWidth = 1.25;
-    const dashDefault = "1.5,3";     // dotted / hairline
-    const dashHighlight = null;        // solid on highlight
+    const defaultEdgeColor = RULE_WEAK; // red hairlines
+    const hoverEdgeColor = RULE_MID; // stronger red
+    const edgeWidth = 1; // hard 1px feel
+    const dashDefault = "2,3"; // dotted / hairline
+    const dashHighlight = null; // solid on highlight
 
     container.selectAll("*").remove();
 
     const svg = container.append("svg")
         .attr("width", width)
         .attr("height", height)
-        .style("background-color", "transparent")
+        .style("background-color", PAPER)
         .style("cursor", "grab");
 
     const g = svg.append("g");
 
+    const defs = svg.append("defs");
+    defs.append("pattern")
+        .attr("id", "grid")
+        .attr("width", 20)
+        .attr("height", 20)
+        .attr("patternUnits", "userSpaceOnUse")
+        .append("path")
+        .attr("d", "M 20 0 L 0 0 0 20")
+        .attr("fill", "none")
+        .attr("stroke", defaultEdgeColor)
+        .attr("stroke-width", 1);
+
+    g.append("rect")
+        .attr("x", -5000)
+        .attr("y", -5000)
+        .attr("width", 10000)
+        .attr("height", 10000)
+        .attr("fill", "url(#grid)")
+        .attr("opacity", 0.55);
+
     // zoom & pan
     const zoom = d3.zoom()
         .scaleExtent([0.6, 2.2])
-        .on("zoom", (event) => {
-            g.attr("transform", event.transform);
-        });
+        .on("zoom", (event) => g.attr("transform", event.transform));
     svg.call(zoom);
 
     const sites = allSites.map((site, index) => ({ ...site, id: `node-${index}` }));
@@ -65,9 +82,10 @@ function createChart() {
         .enter()
         .append("line")
         .attr("stroke", defaultEdgeColor)
-        .attr("stroke-opacity", 0.9)
+        .attr("stroke-opacity", 1)
         .attr("stroke-width", edgeWidth)
-        .attr("stroke-linecap", "round")
+        .attr("shape-rendering", "crispEdges")
+        .attr("stroke-linecap", "butt")
         .attr("stroke-dasharray", dashDefault);
 
     // nodes
@@ -89,6 +107,7 @@ function createChart() {
         .attr("fill", d => getNodeFill(d))
         .attr("stroke", defaultNodeStroke)
         .attr("stroke-width", 1.5)
+        .attr("shape-rendering", "geometricPrecision")
         .on("mouseover", handleMouseOver)
         .on("mouseout", handleMouseOut)
         .on("click", handleClick);
@@ -99,7 +118,9 @@ function createChart() {
         .attr("dy", 4)
         .style("font-family", "JetBrains Mono, monospace")
         .style("font-size", "10px")
-        .style("fill", RULE_MID)
+        .style("letter-spacing", "0.02em")
+        .style("fill", INK)                // labels = ink, not gray
+        .style("opacity", 0.75)
         .style("pointer-events", "none")
         .text(d => {
             const domain = d.website.replace(/^https?:\/\//, "").replace(/^www\./, "");
@@ -157,28 +178,28 @@ function createChart() {
 
     function handleMouseOver(event, d) {
         d3.select(this)
-            .transition().duration(120)
+            .transition().duration(90)
             .attr("fill", hoverNodeFill);
 
         link
-            .transition().duration(120)
+            .transition().duration(90)
             .attr("stroke", l => (l.source.id === d.id || l.target.id === d.id) ? hoverEdgeColor : defaultEdgeColor)
             .attr("stroke-dasharray", l => (l.source.id === d.id || l.target.id === d.id) ? dashHighlight : dashDefault)
-            .attr("stroke-opacity", l => (l.source.id === d.id || l.target.id === d.id) ? 1 : 0.9);
+            .attr("stroke-opacity", 1);
 
         showTooltip(event, d);
     }
 
     function handleMouseOut(event, d) {
         d3.select(this)
-            .transition().duration(120)
+            .transition().duration(90)
             .attr("fill", getNodeFill(d));
 
         link
-            .transition().duration(120)
+            .transition().duration(90)
             .attr("stroke", defaultEdgeColor)
             .attr("stroke-dasharray", dashDefault)
-            .attr("stroke-opacity", 0.9);
+            .attr("stroke-opacity", 1);
 
         hideTooltip();
     }
@@ -188,7 +209,6 @@ function createChart() {
         window.open(d.website, "_blank");
     }
 
-    // tooltip
     function showTooltip(event, d) {
         d3.select("body").selectAll(".chart-tooltip").remove();
 
@@ -197,35 +217,36 @@ function createChart() {
             .attr("class", "chart-tooltip")
             .style("position", "absolute")
             .style("background", PAPER)
-            .style("color", INK_2)
+            .style("color", INK)
             .style("padding", "10px 12px")
-            .style("border", `1.5px dotted ${RULE_MID}`)
-            .style("border-radius", "8px")
-            .style("font-family", "EB Garamond, Georgia, serif")
-            .style("font-size", "14px")
-            .style("line-height", "1.2")
+            .style("border", `1px solid ${ACCENT}`)
+            .style("border-radius", "0px")
+            .style("font-family", "JetBrains Mono, monospace")
+            .style("font-size", "12px")
+            .style("letter-spacing", "0.02em")
+            .style("text-transform", "uppercase")
             .style("pointer-events", "none")
             .style("z-index", "1000")
             .style("opacity", 0);
 
         tooltip.html(`
-      <div style="font-weight:600; color:${INK};">${d.name}</div>
-      <div style="margin-top:3px; font-family:'JetBrains Mono', monospace; font-size:12px; color:${ACCENT};">
-        Class of ${d.year}
-      </div>
-      <div style="margin-top:5px; font-family:'JetBrains Mono', monospace; font-size:11px; color:${RULE_MID};">
-        Click to visit
-      </div>
-    `)
+          <div style="font-weight:700; color:${ACCENT};">${d.name}</div>
+          <div style="margin-top:6px; color:${INK}; opacity:.85;">
+            CLASS OF ${d.year}
+          </div>
+          <div style="margin-top:6px; color:${INK}; opacity:.65;">
+            CLICK TO VISIT
+          </div>
+        `)
             .style("left", (event.pageX + 10) + "px")
             .style("top", (event.pageY - 10) + "px")
-            .transition().duration(160)
+            .transition().duration(120)
             .style("opacity", 1);
     }
 
     function hideTooltip() {
         d3.select("body").selectAll(".chart-tooltip")
-            .transition().duration(120)
+            .transition().duration(90)
             .style("opacity", 0)
             .remove();
     }
@@ -254,7 +275,7 @@ function createChart() {
         const centerY = (minY + maxY) / 2;
 
         svg.transition()
-            .duration(750)
+            .duration(650)
             .call(zoom.transform, d3.zoomIdentity
                 .translate(width / 2, height / 2)
                 .scale(scale)
