@@ -309,7 +309,7 @@ a:focus-visible {
 
 .table-header {
     display: grid;
-    grid-template-columns: 2fr 1fr 2fr;
+    grid-template-columns: 2fr 1fr 2fr 1fr;
     gap: 14px;
     padding: 10px 12px;
     background: var(--primary);
@@ -326,7 +326,7 @@ a:focus-visible {
 
 .site-row {
     display: grid;
-    grid-template-columns: 2fr 1fr 2fr;
+    grid-template-columns: 2fr 1fr 2fr 1fr;
     gap: 14px;
     padding: 12px 12px;
     border-top: var(--hair) solid var(--primary);
@@ -371,6 +371,31 @@ a:focus-visible {
 .site-url {
     color: var(--primary);
     word-break: break-word;
+}
+
+.site-socials {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.social-link {
+    display: inline-flex;
+    color: var(--primary);
+    text-decoration: none;
+    padding: 4px;
+    border: var(--hair) solid transparent;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.social-link:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+
+.social-link svg {
+    display: block;
 }
 
 .margin-notes {
@@ -529,6 +554,10 @@ a:focus-visible {
     .site-url {
         text-decoration: underline;
         text-underline-offset: 2px;
+    }
+
+    .site-socials {
+        margin-top: 4px;
     }
 }
 
