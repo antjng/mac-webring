@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mac CS Webring — Navigating...</title>
+  <script src="js/data.js"></script>
+</head>
+<body>
+  <script>
+    (function () {
+      var DIR = -1;
+      var params = new URLSearchParams(location.search);
+      var from = params.get('from') || document.referrer;
+
+      function norm(url) {
+        try {
+          var u = new URL(url.trim());
+          return (u.hostname + u.pathname).replace(/^www\./, '').replace(/\/$/, '').toLowerCase();
+        } catch (e) {
+          return url.trim().toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+        }
+      }
+
+      var sites = webringData.sites;
+      var fromNorm = norm(from);
+      var idx = -1;
+      for (var i = 0; i < sites.length; i++) {
+        if (norm(sites[i].website) === fromNorm) { idx = i; break; }
+      }
+
+      if (idx === -1) {
+        location.replace('/');
+      } else {
+        var n = sites.length;
+        location.replace(sites[((idx + DIR) + n) % n].website);
+      }
+    })();
+  </script>
+  <noscript>
+    <p>JavaScript is required for webring navigation. <a href="/">Return to the webring homepage.</a></p>
+  </noscript>
+</body>
+</html>

@@ -47,7 +47,7 @@ That said, if you would prefer to start from something that already works, the f
 
 ```html
 <div style="display: flex; align-items: center; gap: 8px;">
-  <a href="https://www.macwebring.xyz/prev">←</a>
+  <a href="https://www.macwebring.xyz/prev?from=https://yoursite.com">←</a>
 
   <a href="https://www.macwebring.xyz/" target="_blank" rel="noopener">
     <img
@@ -57,15 +57,17 @@ That said, if you would prefer to start from something that already works, the f
     />
   </a>
 
-  <a href="https://www.macwebring.xyz/next">→</a>
+  <a href="https://www.macwebring.xyz/next?from=https://yoursite.com">→</a>
 </div>
 ````
+
+Replace `https://yoursite.com` with your actual site URL (must match the one you added to `js/data.js`).
 
 #### JSX / React
 
 ```jsx
 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-  <a href="https://www.macwebring.xyz/prev">←</a>
+  <a href="https://www.macwebring.xyz/prev?from=https://yoursite.com">←</a>
 
   <a href="https://www.macwebring.xyz/" target="_blank" rel="noopener noreferrer">
     <img
@@ -75,7 +77,7 @@ That said, if you would prefer to start from something that already works, the f
     />
   </a>
 
-  <a href="https://www.macwebring.xyz/next">→</a>
+  <a href="https://www.macwebring.xyz/next?from=https://yoursite.com">→</a>
 </div>
 ```
 
