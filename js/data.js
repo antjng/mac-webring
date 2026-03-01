@@ -27,6 +27,7 @@ const webringData = {
       socials: {
         linkedin: "https://www.linkedin.com/in/aymanfsm/",
         x: "https://x.com/aymanfsm",
+        github: "https://github.com/aymanfouad123",
       },
     },
     // add new sites above this comment
@@ -38,7 +39,8 @@ const webringData = {
     //     website: "https://yourwebsite.com",
     //     socials: {
     //         linkedin: "https://www.linkedin.com/in/yourprofile/",
-    //         x: "https://x.com/yourhandle"
+    //         x: "https://x.com/yourhandle",
+    //         github: "https://github.com/yourhandle"
     //     }
     // }
     // note: if you don't have a social, omit that key entirely.
