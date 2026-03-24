@@ -30,6 +30,16 @@ const webringData = {
         github: "https://github.com/aymanfouad123",
       },
     },
+    {
+      name: "Subodh Thallada",
+      year: "2028",
+      website: "https://subodhthallada.com/",
+      socials: {
+        linkedin: "https://www.linkedin.com/in/subodh-thallada/",
+        x: "https://x.com/SubodhThallada",
+        github: "https://github.com/subodh-thallada",
+      },
+    },
     // add new sites above this comment
     // for clarity: year refers to your projected graduation year.
     // follow this format:
